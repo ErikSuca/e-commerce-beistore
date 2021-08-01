@@ -1,0 +1,42 @@
+header{ align-items: center;}
+
+header>a{
+    width: 40%;
+}
+header form{position: relative;}
+
+header input{
+    font-family: 'Roboto', sans-serif;
+    border: 0px;
+    padding: .5rem;
+}
+header button{
+    border: 0px;
+    padding: .5rem;
+    border-radius: 0px 5px 5px 0px;
+    background-color: #00000000;
+    max-width: 65px;
+    position: absolute;
+    right: 0px;
+}
+
+header nav i{
+    color: #fff;
+    margin-right: 5px;
+}
+
+
+header nav ul li a{
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+}
+
+@media (min-width: 768px){
+    header>a{
+        width: 120px;
+    }
+    header nav {
+        width: 30%;
+        max-width: 250px;
+    }
+}

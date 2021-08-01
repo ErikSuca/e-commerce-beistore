@@ -1,0 +1,40 @@
+footer{
+    padding-top: 20px;
+}
+
+footer form{
+    position: relative;
+}
+footer form button{
+    position: absolute;
+    background-color: #00000000;
+    align-self: center;
+    border: 0px;
+    right: 0px;
+}
+footer form input {
+    padding: 10px;
+    border: 0px;
+}
+
+footer section{
+    width: 90%;
+}
+
+
+@media (min-width:768px)  {
+    .info article{
+        width: 45%;
+    }
+}
+@media (min-width:1024px)  {
+    .info{
+        width: 60%;
+    }
+    .info article{
+        width: 30%;
+    }
+    .redes{
+        width: 30%;
+    }
+}

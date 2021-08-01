@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <%- include('../partials/head') %> 
+        <link rel="stylesheet" href="/styles/cart.css">
+    </head>
+<body>
+    <%- include('../partials/header')  %>    
+    <main>
+        <section class="productos">
+            <h2>Productos</h2>
+            <article class="producto-del-carrito">
+                <img src="/images/productos/producto.jpg" alt="producto">
+                <div>
+                    <p class="name-producto">Nombre del Producto</p>    
+                    <p class="descripcion">descripcion</p> 
+                    <form action="/">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" name="cantidad-del-producto" min="0" max="10" value="1" id="cantidad">
+                    </form>
+                    <p class="button-exit">x</p>
+                </div>
+            </article>
+            <article class="producto-del-carrito">
+                <img src="/images/productos/producto.jpg" alt="producto">
+                <div>
+                    <p class="name-producto">Nombre del Producto</p>    
+                    <p class="descripcion">descripcion</p> 
+                    <form action="/">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" name="cantidad-del-producto" min="0" max="10" value="1" id="cantidad">
+                    </form>
+                    <p class="button-exit">x</p>
+                </div>
+            </article>
+            <article class="producto-del-carrito">
+                <img src="/images/productos/producto.jpg" alt="producto">
+                <div>
+                    <p class="name-producto">Nombre del Producto</p>    
+                    <p class="descripcion">descripcion</p> 
+                    <form action="/">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" name="cantidad-del-producto" min="0" max="10" value="1" id="cantidad">
+                    </form>
+                    <p class="button-exit">x</p>
+                </div>
+            </article>
+        </section>
+        <section class="ticket">
+            <article class="resumen-de-cuenta">
+                <p class="resumen-title">Resumen de compras</p>
+                <p class="name-total">Subtotal</p>
+                <p class="date-total">##.##</p>
+                <p class="name-total">Total</p>
+                <p class="date-total">##.##</p>
+                <p class="button-pagar">Pagar</p>
+            </article>
+        </section>
+    </main>
+    <%- include('../partials/footer') %> 
+</body>
+</html>
