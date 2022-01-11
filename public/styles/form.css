@@ -21,6 +21,13 @@ main form input{
     border-radius: 8px;
     background-color: #fff;
 }
+main form select{
+    width: 100%;
+    padding: 10px;
+    border: 0px;
+    border-radius: 8px;
+    background-color: #fff;
+}
 main form label {
     color: #fff;
 }
@@ -54,7 +61,7 @@ main section h2{
     align-items: center;
     position: relative;
 }
-.error input, .error textarea{
+.error input, .error textarea, .error select{
     border: #F20789 3px solid;
 }
 fieldset small, fieldset i[class = "fas fa-exclamation-circle"]{display: none;}
@@ -67,7 +74,7 @@ fieldset small, fieldset i[class = "fas fa-exclamation-circle"]{display: none;}
     right: 10px;
     top: 15px;
 }
-.error small{
+.error small, form small{
     width: 100%;
     text-align: left;
     margin-left: 8px;

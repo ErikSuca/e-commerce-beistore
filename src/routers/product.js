@@ -1,20 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const multerFolder = require('../middlewares/multerFolderMw');
+const isAdmin = require('../middlewares/users/isAdminMw');
 const CreateVerificator = require('../middlewares/products/createVerificator')
 
 const controller = require('../controllers/productController');
+// lista de productos
+router.get('/', controller.indexList); 
+
+// Vista Crear Producto
+router.get('/create',[isAdmin],controller.indexCreate);
+
+// Guardar Producto
+router.post('/create',[multerFolder('product', 'productos/').any()],controller.save);
+
+router.get('/dato',controller.hola);
+// vista editar producto 
+router.get('/edit/',[isAdmin], controller.indexEditList);
+
+// vista editar producto 
+router.get('/edit/:id',[isAdmin],  controller.indexEdit);
+
+// editar producto
+router.put('/edit/:id', [isAdmin, multerFolder('product', 'productos/').any(), CreateVerificator], controller.update); 
+
+// eliminar producto
+router.delete('/delete/:id',[isAdmin], controller.delete); 
 
 router.get('/cart', controller.indexCart);
-router.get('/create', controller.indexCreate);
+//carrito - guardar item
+router.post('/cart/upload', multerFolder('product', 'productos/').any(), controller.cartUpload)
+
 router.get('/:id', controller.indexDetail);
-router.get('/edit/:id', controller.indexEdit);
-router.get('/', controller.indexList);
 
-router.post('/save', [multerFolder('product', 'productos/').any(), CreateVerificator], controller.save);
 
-router.put('/update/:id', [multerFolder('product', 'productos/').any()], controller.update); 
 
-router.delete('/delete/:id', controller.delete); 
 
 module.exports = router;

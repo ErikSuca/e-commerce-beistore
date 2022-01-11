@@ -1,36 +1,130 @@
 const product = require('../models/products');
 const { validationResult } = require('express-validator');
-
+let db = require('../database/models')
 module.exports = {
-    indexCart: (req, res) => {
-        res.render('products/cart');
+    indexCart:async (req, res) => {
+        const cart = await product.readCart(req.session.userLogged.id)
+        res.render('products/cart',{
+            cart
+        });
     },
-    indexDetail: (req, res) =>{
-        res.render('products/detail', {producto : product.one(req.params.id)});
+    indexDetail: async (req, res) => {
+        try {
+            if (isNaN(parseInt(req.params.id))) {
+                return res.redirect('/error')
+            } else {
+                const producto = await product.one(req.params.id)
+                res.render('products/detail', {
+                    producto: producto,
+                    error: !this.producto ? 'Error, producto no encontrado.' : ''
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     },
-    indexCreate: (req, res) => {
-        res.render('products/form', { action: '/products/save' , typePage: 'create', title: 'Crear un producto'});
+    indexCreate: async (req, res) => {
+        try{
+            const categories = await db.Categories.findAll();
+            const brands = await db.Brands.findAll();
+
+            return res.render('products/create', {
+                categories: categories,
+                brands: brands,
+                oldData: undefined
+            });
+        }catch (error){
+            console.log(error);
+        }
     },
-    indexEdit:(req,res) =>{
-        res.render('products/form', { action: `/products/update/${product.one(req.params.id).id}?_method=PUT` , typePage: 'edit', title: 'Editar producto', producto: product.one(req.params.id)});
+    indexEdit: async (req, res) => {
+        try {
+            const producto = await product.one(req.params.id)
+            const categories = await db.Categories.findAll()
+            const brands = await db.Brands.findAll()
+            return res.render('products/edit', { producto, categories, brands });
+        } catch (error) {
+            console.log(error);
+        }
     },
-    indexList: (req, res)=>{
-        res.render('products/list', {productos: product.all(), titleProduct: 'Lista de Productos'}) 
+    indexEditList:async (req, res)=>{
+        const productos = await product.all()
+        return res.render('products/list', { productos, titleProduct: 'Lista de Productos', edit: true })
     },
-    save: (req, res)=>{
-        let errores = validationResult(req)
-        // if(!errores.isEmpty()){
-        //     res.send(errores.array());
-        // }
-        let newProduct = product.new(req.body, req.files);
-        return newProduct == true? res.redirect('/home'): res.send('Error');
+    indexList:async (req, res) => {
+        try {
+            const products = await product.all()
+            //res.send(products)
+            return res.render('products/list', { productos: products, titleProduct: 'Lista de Productos' })
+            
+        } catch (error) {
+            console.log(error);
+        }
     },
-    update: (req, res)=>{
-        let editProduct = product.edit(req.body, req.files, req.params.id);
-        return editProduct == true? res.redirect('/home'): res.send('Error, no se pudo editar');
+    hola:(req, res)=>{
+        console.log(req.query);
+        res.send(req.query);
+    },
+    save: async (req, res) => {
+        console.log("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA                          ");
+        console.log(req.body);
+        return res.send(req.body)
+        try {
+            const categories = await db.Categories.findAll();
+            const brands = await db.Brands.findAll();
+            let error = validationResult(req)
+            if (!error.isEmpty()) {
+                req.body.category = req.body.category && req.body.category.length == 1 ? [req.body.category]: req.body.category
+                res.render('products/create', {
+                    categories,
+                    brands,
+                    errores: error.mapped(),
+                    oldData: req.body,
+                })
+            } else {
+                console.log(req.body);
+                console.log(req.files);
+                product.new(req.body, req.files);
+                return res.redirect('/products')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    update: async (req, res) => {
+        try {
+            const categories = await db.Categories.findAll();
+            const producto = await product.one(req.params.id)
+            const brands = await db.Brands.findAll();
+            let error = validationResult(req)
+            if (!error.isEmpty()) {
+                req.body.category = req.body.category && req.body.category.length == 1 ? [req.body.category]: req.body.category
+                res.render('products/edit', {
+                    producto,
+                    categories,
+                    brands,
+                    errores: error.mapped(),
+                    oldData: req.body
+                })
+            } else {
+                product.edit(req.body, req.files, req.params.id)
+                return res.redirect(`/products/${req.params.id}`);  
+            }
+        } catch (error) {
+            console.log(error);
+        }
     },
     delete: (req, res) => {
-        let deleteProduct = product.delete(req.params.id);
-        return deleteProduct == true? res.redirect('/home'): res.send('Error, no se pudo eliminar');   
+        product.delete(req.params.id);
+        return res.redirect('/home');
+    },
+    cartUpload: async(req, res)=>{
+        if(req.session.userLogged){
+            user_id = req.session.userLogged.id
+        } else {
+            return res.redirect('/users/login')
+        }
+        product.itemUpload(req.body,user_id)
+        return res.redirect('/home')
     }
 }
